@@ -4,18 +4,8 @@
 // Se ha corregido el error de 'value' sin 'onChange'.
 
 import React from 'react';
-import { useSpring, animated } from '@react-spring/web';
 
 const SearchBox = ({ searchTerm, setSearchTerm, resultsCount, totalCount }) => {
-  // Configuración de la animación para la notificación de resultados.
-  const props = useSpring({
-    from: { opacity: 0, transform: 'translateY(20px)' },
-    to: { opacity: 1, transform: 'translateY(0px)' },
-    config: { tension: 200, friction: 15 },
-    reset: true,
-    reverse: resultsCount === undefined,
-  });
-
   return (
     // Contenedor principal con un ancho máximo y centrado.
     <div className="w-full max-w-2xl mx-auto px-4 sm:px-0">
@@ -66,9 +56,9 @@ const SearchBox = ({ searchTerm, setSearchTerm, resultsCount, totalCount }) => {
         )}
       </div>
 
-      {/* Contenedor de la notificación de resultados con animación */}
+      {/* Contenedor de la notificación de resultados sin animación */}
       {resultsCount !== undefined && (
-        <animated.div style={props} className="flex justify-center text-sm mb-2">
+        <div className="flex justify-center text-sm mb-2">
           <div className="relative px-6 py-2 rounded-full flex items-center bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 shadow-lg transform transition-all duration-300 hover:scale-105">
             <span role="img" aria-label="icono de búsqueda" className="mr-2 text-xl">
               {resultsCount > 0 ? '✨' : '⚠️'}
@@ -89,7 +79,7 @@ const SearchBox = ({ searchTerm, setSearchTerm, resultsCount, totalCount }) => {
               )}
             </span>
           </div>
-        </animated.div>
+        </div>
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 // App.jsx
-// Este es el componente principal de la aplicación, ahora con lógica de navegación mejorada
-// y con los componentes de About y Help integrados en la misma página principal.
+// Este es el componente principal de la aplicación con navegación mejorada
+// e integración de los componentes de About y Help en una página unificada.
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import UserList from './components/UserList';
@@ -19,7 +19,8 @@ import ContactPage from './pages/ContactPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
 import DocumentationPage from './pages/DocumentationPage'; 
-import SupportPage from './pages/SupportPage'; // <-- 1. Importación agregada
+import SupportPage from './pages/SupportPage';
+import AboutPage from './pages/AboutPage';
 
 // Importación de los componentes de "sección" que se muestran dentro de la página principal
 import AboutSection from './pages/AboutSection';
@@ -43,8 +44,7 @@ export default function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [connectionStatus, setConnectionStatus] = useState('checking'); // 'checking', 'connected', 'disconnected'
-  // 2. 'support' agregado como posible estado de currentPage
-  const [currentPage, setCurrentPage] = useState('main'); // Estado para la navegación 
+  const [currentPage, setCurrentPage] = useState('main'); // Estado para la navegación entre páginas completas
   const [showAboutSection, setShowAboutSection] = useState(false); // Estado para el toggle de AboutSection
   const [showHelpSection, setShowHelpSection] = useState(false); // Estado para el toggle de HelpSection
   const [lastUpdated, setLastUpdated] = useState(null);
@@ -79,7 +79,7 @@ export default function App() {
     }
   }, [showHelpSection]);
 
-  // 4. Función para manejar las acciones de ayuda (solicitud de soporte técnico o abrir modal de sugerencia)
+  // Función para manejar las acciones de ayuda (solicitud de soporte técnico o abrir modal de sugerencia)
   const onHelpAction = useCallback((message) => {
     if (message === 'support-request') {
         // Redirigir a la página de soporte
@@ -287,8 +287,11 @@ export default function App() {
     case 'documentation':
       pageContent = <DocumentationPage onNavigate={handleNavigate} />;
       break;
-    case 'support': // <-- 5. Nuevo caso para la página de Soporte Técnico
+    case 'support':
         pageContent = <SupportPage onNavigate={handleNavigate} />;
+        break;
+    case 'about':
+        pageContent = <AboutPage onNavigate={handleNavigate} />;
         break;
     default:
       if (loading) {
@@ -313,7 +316,7 @@ export default function App() {
             </div>
             
             {/* Secciones que se muestran y ocultan con los botones del Header */}
-            {showAboutSection && <AboutSection />}
+            {showAboutSection && <AboutSection onNavigate={handleNavigate} />}
             {showHelpSection && <HelpSection onHelpAction={onHelpAction} onNavigate={handleNavigate} />}
             
             {!showAboutSection && !showHelpSection && (
